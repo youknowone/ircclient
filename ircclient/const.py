@@ -14,10 +14,10 @@ MODE = u'MODE'
 INVITE = u'INVITE'
 
 # Pseudo-messages
-## socket level
+# socket level
 CREATED = u'CREATED'
 CONNECTED = u'CONNECTED'
-## event level
+# event level
 LOADED = u'LOADED'
 
 # Message-like
@@ -25,7 +25,7 @@ ERROR = u'ERROR'
 
 # From RFC
 # sed -n -e "s/ *\([0-9][0-9][0-9]\)  *\([A-Z][A-Z]*_[A-Z][A-Z_]*\)/\2 = u'\1'/p"
-# :s/\(.*\) \(.*\)/\2 = u'\1'/ 
+# :s/\(.*\) \(.*\)/\2 = u'\1'/
 RPL_WELCOME = u'001'
 RPL_YOURHOST = u'002'
 RPL_CREATED = u'003'

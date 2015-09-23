@@ -2,16 +2,16 @@
 # -*- coding: utf-8 -*-
 import pytest
 
-from easyirc import util
-from easyirc.socket import Socket
+from ircclient.socket import NonblockingSocket
+from ircclient.struct import Message
 
 import settings
 
-from mocksocket import *
+from mock_socket import *
 
 
 @pytest.mark.parametrize(['SocketType'], [
-    [Socket],
+    [NonblockingSocket],
     [MockSocket],
 ])
 def test_create(SocketType):
@@ -23,12 +23,14 @@ def test_create(SocketType):
 
 socktypes = [[MockSocket]]
 if settings.TEST_REALSERVER:
-    socktypes.append([Socket])
-@pytest.mark.parametrize(['SocketType'], socktypes)
-def test_enqueue(SocketType):
-    print SocketType
+    socktypes.append([NonblockingSocket])
 
-    sock = test_create(SocketType)
+
+@pytest.mark.parametrize(['NonblockingSocketType'], socktypes)
+def test_enqueue(NonblockingSocketType):
+    print NonblockingSocketType
+
+    sock = test_create(NonblockingSocketType)
     sock.connect()
     for msg in sock.dispatch_all():
         print msg
@@ -38,10 +40,10 @@ def test_enqueue(SocketType):
     def dispatch_useful():
         print '--> throwing out unusefuls'
         for msg in sock.dispatch_all():
-            msg = util.msgsplit(msg)
+            msg = Message(msg)
             print 'type:', msg.type, 'msg:', u' '.join(msg).encode('utf-8')
             if msg.type == PING:
-                sock.cmd(PONG, msg[1])
+                sock.send_args(PONG, msg[1])
                 continue
             if msg.type == PRIVMSG:
                 continue
@@ -57,26 +59,26 @@ def test_enqueue(SocketType):
         print '<-- get a message'
         return msg
 
-    sock.cmd('NICK', 'easybot')
-    sock.cmdl('USER', 'easybot', 'localhost', '0', 'realname')
+    sock.send_args('NICK', 'easybot')
+    sock.send_args('USER', 'easybot', 'localhost', '0', 'realname')
 
     msg = None
     while msg is None:
         sock.recv()
         msg = dispatch_useful()
-    assert msg.type == '375' # message of the day - for the registered user only
+    assert msg.type == '375'  # message of the day - for the registered user only
 
     connop = settings.TEST_CONNECTION
     chan = connop['autojoins'][0]
-    sock.cmd(JOIN, chan)
+    sock.send_args(JOIN, chan)
     msg = None
     while msg is None:
         sock.recv()
         msg = dispatch_useful()
     assert msg.type == JOIN
-    sock.cmdl(PRIVMSG, chan, 'can you see my message?')
-    sock.cmdl(PRIVMSG, chan, u'can you see my 한글 message?')
-    sock.cmdl(PART, chan, u'test did end with non-ascii 한글')
+    sock.send_args(PRIVMSG, chan, 'can you see my message?')
+    sock.send_args(PRIVMSG, chan, u'can you see my 한글 message?')
+    sock.send_args(PART, chan, u'test did end with non-ascii 한글')
     msg = None
     while msg is None:
         sock.recv()
@@ -86,4 +88,4 @@ def test_enqueue(SocketType):
 if __name__ == '__main__':
     test_enqueue(MockSocket)
     if settings.TEST_REALSERVER:
-        test_enqueue(Socket)
+        test_enqueue(NonblockingSocket)

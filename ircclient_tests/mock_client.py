@@ -1,8 +1,10 @@
 
-from easyirc.connection import BaseConnection
+from ircclient.client import BaseConnection
 from mocksocket import Socket
 
+
 class MockCommandSocket(Socket):
+
     def __init__(self):
         self.sends = []
 
@@ -11,6 +13,7 @@ class MockCommandSocket(Socket):
 
 
 class MockCommandConnection(BaseConnection):
+
     def __init__(self, eventmanager, cmdmanager):
         BaseConnection.__init__(self, eventmanager, cmdmanager)
 

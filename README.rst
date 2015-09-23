@@ -1,35 +1,25 @@
-EasyIRC
-~~~~~~~~
+ircclient
+~~~~~~~~~
 
-Easy IRC is an IRC toolkit to develop IRC client or bot, especially for Python/IRC beginner.
-
-What are the Goals:
-
-- Every core parts are replacable or expendable. They are layered considerately.
-- Every behaviors are event-driven or pluggable.
-- Every events are described independantly as much as possible.
-- Super easy-to-write new modules.
-- Batteries included - common bot features are included.
-- General-purpose, still.
-- Every parts are reusable. Command, event, module, entire bot or even non-easyirc based bot.
-
-What is not a goal:
-
-- High-performance.
+Simple IRC client interface.
 
 
 Example
 -------
 
-At this time, there is no document yet.
+	from ircclient.client import DispatchClient
 
-You can follow example bot step by step:
+	client = DispatchClient(('localhost', 6667), blocking=True)
+	client.connect()
 
-- BasicBot_ as a starting point.
-- Messages_ for general irc message hook.
-- Regex_ for regex-based message hook.
+	m = client.dispatch()  # ircclient.struct.Message
+	assert m.type == 'CONNECTED'  # connected message which is out of irc protocol
 
-.. _BasicBot: https://github.com/youknowone/easyirc/blob/master/exambot/00basic.py
-.. _Context: https://github.com/youknowone/easyirc/blob/master/exambot/01context.py
-.. _Messages: https://github.com/youknowone/easyirc/blob/master/exambot/10message.py
-.. _Regex: https://github.com/youknowone/easyirc/blob/master/exambot/90regex.py
+	client('nick', 'testnick')  # list args are joined. colons will be automatically added.
+	client('user 8 * :{name}', name='realname')  # keyword args are formatted as raw string
+
+	while True:
+		m = client.dispatch()  # raw=True option will make it returns raw text
+		print(m)  # ircclient.struct.Message
+
+

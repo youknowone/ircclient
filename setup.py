@@ -7,7 +7,7 @@ except ImportError:
 
 
 def get_version():
-    with open('easyirc/version.txt') as f:
+    with open('ircclient/version.txt') as f:
         return f.read().strip()
 
 
@@ -19,25 +19,20 @@ def get_readme():
         return ''
 
 setup(
-    name='easyirc',
+    name='ircclient',
     version=get_version(),
-    description='Easy IRC is an IRC toolkit to develop IRC client or bot, especially for Python/IRC beginner.',
+    description='Simple client interface.',
     long_description=get_readme(),
     author='Jeong YunWon',
-    author_email='jeong+easyirc@youknowone.org',
-    url='https://github.com/youknowone/easyirc',
+    author_email='jeong+ircclient@youknowone.org',
+    url='https://github.com/youknowone/ircclient',
     packages=(
-        'easyirc',
-        'easyirc/command',
-        'easyirc/event',
-        'easyirc/client',
+        'ircclient',
     ),
     package_data={
-        'easyirc': ['version.txt']
+        'ircclient': ['version.txt']
     },
     install_requires=[
         'distribute',
-        'prettyexc',
-        'cacheobj==0.8.2',
     ],
 )

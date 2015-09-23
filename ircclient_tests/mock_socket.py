@@ -1,25 +1,21 @@
 
 # -*- coding: utf-8 -*-
 import socket
-from easyirc import util
-from easyirc.const import *
-from easyirc.socket import Socket
+from ircclient.const import *
+from ircclient.socket import BlockingSocket as Socket
+
 
 class MockSocket(Socket):
+
     def __init__(self, addr=('localhost', 8080), charset='utf-8'):
         Socket.__init__(self, addr, charset)
 
     def create_socket(self):
         self.socket = MockServerSocket()
 
-    def put(self, line):
-        self.recvbuffer += line
-
-    def putln(self, line):
-        self.put(line + '\r\n')
-
 
 class MockServerSocket(object):
+
     def __init__(self):
         self.buff = ''
         self.connected = False
