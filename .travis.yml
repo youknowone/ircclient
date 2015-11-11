@@ -1,0 +1,18 @@
+language: python
+python:
+  - "2.7"
+  - "3.3"
+  - "3.4"
+  - "3.5"
+  - "pypy"
+  - "pypy3"
+  - "nightly"
+install:
+  - "pip install flake8 mock pytest ."
+script:
+  - "flake8 --ignore=E501,F403 ."
+  - "py.test --verbose tests/"
+matrix:
+  allow_failures:
+    - python: nightly
+sudo: false
