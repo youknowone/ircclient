@@ -17,7 +17,7 @@ TEST_REALSERVER = False
 try:
     from local_settings import *
 except ImportError:
-    print '*** NO local_settings.py file set up. read README! ***'
+    print('*** NO local_settings.py file set up. read README! ***')
     pass
 
 TEST_CONNECTION = CONNECTIONS[0]

@@ -1,3 +1,6 @@
+# coding: utf-8
+from __future__ import absolute_import
+
 
 class ArgumentList(object):
 
@@ -17,7 +20,7 @@ class Message(list):
             super(Message, self).__init__(line)
         else:
             super(Message, self).__init__()
-            assert isinstance(line, unicode)
+            # assert isinstance(line, unicode)
 
             # Append the sender, if not exists
             if line[0] == ':':
@@ -70,9 +73,11 @@ class Command(list):
     def cmd(self):
         return self[0]
 
-    @classmethod
-    def interpret(cls, line):
-        items = cls()
+
+try:
+    unicode(0)
+except NameError:
+    unicode = str  # py3
 
 
 class Identity(unicode):

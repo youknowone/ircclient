@@ -1,12 +1,10 @@
-
-#-*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
+from __future__ import absolute_import
 
 import threading
-import traceback
 
-from .const import *
-from .struct import Message, Command
-from .socket import BlockingSocket, NonblockingSocket, NoneSocket, ClosedSocket
+from .struct import Message
+from .socket import BlockingSocket, NonblockingSocket, ClosedSocket, NoneSocket
 
 
 class BaseClient(object):
@@ -61,7 +59,7 @@ class BaseClient(object):
         self.socket = ClosedSocket(('', 0))
 
     def reconnect(self):
-        self.socket = none_socket
+        self.socket = NoneSocket()
 
     def __getattr__(self, key):
         """Borrow commands from command manager."""

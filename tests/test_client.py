@@ -1,18 +1,15 @@
 
 # -*- coding: utf-8 -*-
-import time
 import pytest
-from ircclient.client import DispatchClient, CallbackClient
-from ircclient.const import *
-from ircclient.struct import Message
-from mock_socket import MockSocket
+from ircclient.client import CallbackClient
+from ircclient.const import CONNECTED, NICK, USER, PING, PONG, JOIN, PRIVMSG, QUIT
 
 from test_socket import socktypes, test_create
 
 import settings
 connop = settings.TEST_CONNECTION
 
-
+"""
 @pytest.mark.parametrize(['SocketType'], socktypes)
 def test_dispatch(SocketType):
     client = DispatchClient(None)
@@ -38,7 +35,7 @@ def test_dispatch(SocketType):
             if msg.type == themsg:
                 break
             else:
-                print msg
+                print(msg)
 
     client(NICK, connop['nick'])
     client.send_args(USER, connop['nick'], 'Bot by EasyIRC')
@@ -53,11 +50,12 @@ def test_dispatch(SocketType):
     client(QUIT, u'QUIT MESSAGE')
     check_msg('ERROR')
     client.disconnect()
+"""
 
 
 @pytest.mark.parametrize(['SocketType'], socktypes)
 def test_callback(SocketType):
-    print SocketType
+    # print(SocketType)
 
     def callback(client, ps):
         chan = connop['autojoins'][0]
@@ -72,10 +70,10 @@ def test_callback(SocketType):
             client(PRIVMSG, chan, u'test the 콜백')
             client(QUIT, u'전 이만 갑니다')
         elif ps.type == 'ERROR':
-            print 'END!'
+            print('END!')
             client.disconnect()
         else:
-            print ps
+            print(ps)
 
     client = CallbackClient(None, callback)
 
@@ -86,7 +84,7 @@ def test_callback(SocketType):
 
 
 if __name__ == '__main__':
-    test_dispatch(socktypes[0][0])
+    # test_dispatch(socktypes[0][0])
     # test_dispatch(socktypes[1][0])
     test_callback(socktypes[0][0])
     # test_callback(socktypes[1][0])

@@ -1,10 +1,10 @@
-
-#-*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 from __future__ import absolute_import
+
 import socket
 import select
 
-from .const import *
+from .const import CONNECTED, DISCONNECTED, CREATED
 
 
 RAW_LOG = False
@@ -16,7 +16,7 @@ class BaseSocket(object):
         """addr is a tuple represents (host, port)"""
         self.addr = addr
         self.charset = charset
-        self._buffer = ''
+        self._buffer = b''
         self.recv_queue = []
         self.send_queue = []
         self.send_callback = None
@@ -72,7 +72,7 @@ class BaseSocket(object):
             return None
         msg = self.recv_queue.pop(0)
         if RAW_LOG:
-            print '>', msg
+            print('>', msg)
         return msg
 
     def dispatch_all(self):
@@ -85,11 +85,11 @@ class BaseSocket(object):
 
     def _split_buffer(self):
         """Catch 'ValueError' to check unsplitable"""
-        newline, self._buffer = self._buffer.split('\r\n', 1)
+        newline, self._buffer = self._buffer.split(b'\r\n', 1)
         try:
             return newline.decode(self.charset)
         except:
-            print 'Supposed charset is', self.charset, ', but undecodable string found:', newline
+            print('Supposed charset is', self.charset, ', but undecodable string found:', newline)
             return newline
 
     def _enqueue(self, line):
@@ -122,7 +122,7 @@ class BaseSocket(object):
                     self.connected = False
                 else:
                     import traceback
-                    print '--- Error caught ---'
+                    print('--- Error caught ---')
                     traceback.print_exc()
                     raise e  # debug
                 self._enqueue(e)
@@ -134,7 +134,7 @@ class BlockingSocket(BaseSocket):
 
     def _send(self, line):
         if RAW_LOG:
-            print '<', line,
+            print('<', line,)
         self.socket.send(line.encode(self.charset))
 
     def connect(self):

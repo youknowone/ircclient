@@ -1,7 +1,6 @@
-
 # -*- coding: utf-8 -*-
+
 import socket
-from ircclient.const import *
 from ircclient.socket import BlockingSocket as Socket
 
 
@@ -17,25 +16,26 @@ class MockSocket(Socket):
 class MockServerSocket(object):
 
     def __init__(self):
-        self.buff = ''
+        self.buff = b''
         self.connected = False
 
     def connect(self, addr):
-        self.buff += ':localhost NOTICE Auth :*** Looking up your hostname...\r\n'
+        self.buff += b':localhost NOTICE Auth :*** Looking up your hostname...\r\n'
         self.connected = True
 
     def send(self, line):
-        cmds = line.split(' ')
+        cmds = line.split(b' ')
         table = {
-            'PING': ':localhost PONG ' + cmds[1],
-            'USER': ':localhost 375 the day of message',
-            'JOIN': ':localhost JOIN :blah',
-            'PART': ':localhost PART :blah',
-            'QUIT': 'ERROR :Closing link: (uname@14.36.48.145) [Quit: message]',
+            b'PING': b':localhost PONG ' + cmds[1],
+            b'USER': b':localhost 375 the day of message',
+            b'JOIN': b':localhost JOIN :blah',
+            b'PART': b':localhost PART :blah',
+            b'QUIT': b'ERROR :Closing link: (uname@14.36.48.145) [Quit: message]',
         }
         if cmds[0] in table:
-            self.buff += table[cmds[0]] + '\r\n'
-        if cmds[0] == 'QUIT':
+            msg = table[cmds[0]] + b'\r\n'
+            self.buff += msg
+        if cmds[0] == b'QUIT':
             self.close()
 
     def recv(self, size):
@@ -43,7 +43,7 @@ class MockServerSocket(object):
             if not self.connected:
                 raise socket.error(9, 'Bad descriptor')
         buff = self.buff
-        self.buff = ''
+        self.buff = b''
         return buff
 
     def shutdown(self, how):
