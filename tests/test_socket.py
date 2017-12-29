@@ -21,6 +21,7 @@ def test_create(SocketType):
     assert(sock.dispatch() is None)
     return sock
 
+
 socktypes = [[MockSocket]]
 if settings.TEST_REALSERVER:
     socktypes.append([NonblockingSocket])
@@ -84,6 +85,7 @@ def test_enqueue(NonblockingSocketType):
         sock.recv()
         msg = dispatch_useful()
     assert(msg.type == 'PART')
+
 
 if __name__ == '__main__':
     test_enqueue(MockSocket)

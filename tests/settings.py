@@ -15,7 +15,7 @@ CONNECTIONS = [
 TEST_REALSERVER = False
 
 try:
-    from local_settings import *
+    from local_settings import *  # noqa
 except ImportError:
     print('*** NO local_settings.py file set up. read README! ***')
     pass

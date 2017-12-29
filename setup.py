@@ -18,6 +18,7 @@ def get_readme():
     except IOError:
         return ''
 
+
 setup(
     name='ircclient',
     version=get_version(),

@@ -88,7 +88,7 @@ class BaseSocket(object):
         newline, self._buffer = self._buffer.split(b'\r\n', 1)
         try:
             return newline.decode(self.charset)
-        except:
+        except UnicodeDecodeError:
             print('Supposed charset is', self.charset, ', but undecodable string found:', newline)
             return newline
 
