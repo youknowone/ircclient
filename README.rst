@@ -1,3 +1,6 @@
+.. image:: https://travis-ci.org/youknowone/ircclient.svg?branch=master
+    :target: https://travis-ci.org/youknowone/ircclient
+
 ircclient
 ~~~~~~~~~
 
@@ -7,19 +10,21 @@ Simple IRC client interface.
 Example
 -------
 
-	from ircclient.client import DispatchClient
+.. code:: python
 
-	client = DispatchClient(('localhost', 6667), blocking=True)
-	client.connect()
+    from ircclient.client import DispatchClient
 
-	m = client.dispatch()  # ircclient.struct.Message
-	assert m.type == 'CONNECTED'  # connected message which is out of irc protocol
+    client = DispatchClient(('localhost', 6667), blocking=True)
+    client.connect()
 
-	client('nick', 'testnick')  # list args are joined. colons will be automatically added.
-	client('user 8 * :{name}', name='realname')  # keyword args are formatted as raw string
+    m = client.dispatch()  # ircclient.struct.Message
+    assert m.type == 'CONNECTED'  # connected message which is out of irc protocol
 
-	while True:
-		m = client.dispatch()  # raw=True option will make it returns raw text
-		print(m)  # ircclient.struct.Message
+    client('nick', 'testnick')  # list args are joined. colons will be automatically added.
+    client('user 8 * :{name}', name='realname')  # keyword args are formatted as raw string
+
+    while True:
+        m = client.dispatch()  # raw=True option will make it returns raw text
+        print(m)  # ircclient.struct.Message
 
 

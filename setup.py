@@ -33,6 +33,6 @@ setup(
         'ircclient': ['version.txt']
     },
     install_requires=[
-        'distribute',
+        'setuptools',
     ],
 )
